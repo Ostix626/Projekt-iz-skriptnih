@@ -1,12 +1,13 @@
 import pdfplumber as pp
 import re
+import sys
+import io
 
-
-PDFpath = "2201-50-9.PDF"
+PDFpath = "racuni/zelengrad2.pdf"
 zelengrad_re = re.compile(r'(\d+)/ 40[\s*\d/]*, (.*?)\s\s [\s]+([\d.]+\,\d{1}) (KOM|MET|KG|M\*2|PAK)[\s]+([\d.]+\,\d+)\s\s')
 tablica = False
 
-file = open("tab.csv", "a") 
+file = open("tab.csv", "a",  encoding = 'utf-8') 
 file.truncate(0)
 
 with pp.open(PDFpath) as pdf:
@@ -33,3 +34,6 @@ with pp.open(PDFpath) as pdf:
                 file.write(m.group(1) + "@" + m.group(2) + "@" + m.group(3) + "@" + m.group(4) + "@" + m.group(5) + "\n")
 
 file.close()
+         
+
+
