@@ -1,0 +1,66 @@
+body {
+    background: url("slike/sivi.jpg");
+    background-color: rgb(245, 245, 245);
+}
+.navbar-brand {
+    padding: 0 0 0 0;
+}
+.navbar-expand-lg {
+    padding: 0 0 0 0;
+}
+.nav-item{
+    padding: 4px;
+    height: 50px;
+    min-width: 200px;
+    text-align: center;
+    font-size: 18px;
+}
+.nav-item:hover {
+    background-color: rgb(174, 180, 183, 0.5);
+}
+
+.active {
+    background-color: black;
+}
+
+.row-padding {
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.table-hover> tbody> tr:hover{
+    background-color: rgba(255, 255, 255, 0.2);
+}
+table.table-bordered{
+    border:1px solid rgba(0, 0, 0, 0.5);
+    margin-top:20px;
+  }
+table.table-bordered > thead > tr > th{
+    border:1px solid rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.65);
+}
+table.table-bordered > tbody > tr > td{
+    border:1px solid rgba(255, 255, 255, 0.5);
+}
+.ro{
+    border: none; 
+    background-color: rgba(255, 255, 255, 0.5);
+    outline:none;
+    background:none;  
+    
+
+    display:table-cell; 
+    width:100%;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+
+
+
+
+

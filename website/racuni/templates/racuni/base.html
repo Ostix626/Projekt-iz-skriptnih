@@ -1,0 +1,63 @@
+<!-- path do static fileova -->
+{% load static %} 
+
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>{% block title %}Ulazni racun{% endblock %}</title>
+        
+        
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet"  text="text/css" href="{% static 'bootstrap/bootstrap.css' %}">
+
+        {% block head %}
+        {% endblock %}
+
+        <link rel="stylesheet" text="text/css" href="{% static 'style.css' %}" />
+
+        {% block head2 %}
+        {% endblock %}
+
+    </head>
+
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+            <div class="container-xl">
+                <button class="navbar-toggler" data-toggle="collapse" data-target="#navMenu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navMenu">
+                    <ul class="navbar-nav md-auto" style="margin: auto;">
+                        <li class="nav-item {% block a2 %}{% endblock %}"> <a class="nav-link" href="{% url 'ulazniRacun' %}">Unesi račun</a> </li>
+                        <a href="{% url 'info' %}" class="navbar-brand"><img src="{% static 'slike/sLOGO-transparent.png' %}" height="50" style="margin-left: 15px;"></a>
+                        <li class="nav-item {% block a4 %}{% endblock %}"> <a class="nav-link" href="{% url 'racuni' %}">Popis računa</a> </li>
+                    </ul>
+                </div>
+            </div>
+          </nav>
+
+       
+
+        <div class="container-xl pt-2" >
+            {% block body %}
+            {% endblock %}
+        </div>
+        
+        
+
+    <!-- jQuery library -->
+    <script src="{% static 'bootstrap/jquery.min.js' %}"></script>
+    <!-- Popper JS -->
+    <script src="{% static 'bootstrap/popper.min.js' %}"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="{% static 'bootstrap/bootstrap.min.js' %}"></script>
+
+    {% block bottom %}
+    {% endblock %}
+
+    </body>
+</html>
