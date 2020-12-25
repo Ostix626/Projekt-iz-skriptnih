@@ -17,9 +17,9 @@ app_name = 'racuni'
 def convertPDF(request):
     file = request.FILES['inputfile']
 
-    if default_storage.exists('racun_test'):
-        default_storage.delete('racun_test')
-    file_name = default_storage.save('racun_test', file)
+    if default_storage.exists('racunPDF'):
+        default_storage.delete('racunPDF')
+    file_name = default_storage.save('racunPDF', file)
 
     zelengrad_re = re.compile(r'(\d+)/ 40[\s*\d/]*, (.*?)\s\s [\s]+([\d.]+\,\d{1}) (KOM|MET|KG|M\*2|PAK)[\s]+([\d.]+\,\d+)\s\s')
     tablica = False
@@ -62,7 +62,7 @@ def convertPDF(request):
 
 
 def ulaz(request):
-    datum = datetime.datetime.strptime(request.POST['datum_racuna'], '%d/%m/%y').strftime('%y-%m-%d')
+    datum = datetime.datetime.strptime(request.POST['datum_racuna'], '%d/%m/%Y').strftime('%Y-%m-%d')
     broj_racuna = request.POST['br_racuna']
     Racuni(firma=request.POST['dobavljac'], broj_racuna=broj_racuna, datum=datum).save()
     #id_racun = Racuni.objects.all().order_by("-id").only("id")[0]
