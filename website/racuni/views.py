@@ -1,18 +1,68 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.db import connection
 from django.db.models import Q
+from django.core.files.storage import default_storage
+
 import datetime
 import json
+import pdfplumber as pp
+import re
+import requests
 
 from .models import Materijal, Racuni, Krm
 
-
 app_name = 'racuni'
+
+def convertPDF(request):
+    file = request.FILES['inputfile']
+
+    if default_storage.exists('racun_test'):
+        default_storage.delete('racun_test')
+    file_name = default_storage.save('racun_test', file)
+
+    zelengrad_re = re.compile(r'(\d+)/ 40[\s*\d/]*, (.*?)\s\s [\s]+([\d.]+\,\d{1}) (KOM|MET|KG|M\*2|PAK)[\s]+([\d.]+\,\d+)\s\s')
+    tablica = False
+    prvi_red = False
+
+    data = []
+
+    with pp.open(file_name) as pdf:
+        pages = pdf.pages
+        
+        for i,pg in enumerate(pages):
+            text = pages[i].extract_text()
+        
+            for row in text.split("\n"):
+                if row.startswith("Šifra"):
+                    tablica = True
+                    continue
+                    
+                if row.startswith("/6 POVRAT ROBE:"):
+                    tablica = False
+                    break
+                    
+                if row.startswith("Copyright Aura Soft 2001."):
+                    tablica = False
+                    continue
+                
+                if tablica and (row.startswith("*/ 40") != 1):
+                    m = zelengrad_re.search(row)
+                    data.append(m.group(1) + "@" + m.group(2) + "@" + m.group(3) + "@" + m.group(4) + "@" + m.group(5) + "\n")
+                    continue
+                
+                if row.startswith("ZELENGRAD d.o.o. PAZIN") and prvi_red == False:
+                    data.append("ZELENGRAD d.o.o.@" + row.split()[-1] + "@") 
+                elif (row.find('Datum:') != -1) and prvi_red == False:
+                    data.append(row.split()[-2] + "\n") 
+                    prvi_red = True
+        
+
+    return JsonResponse(data, safe=False)
 
 
 def ulaz(request):
-    datum = datetime.datetime.strptime(request.POST['datum_racuna'], '%d/%m/%Y').strftime('%Y-%m-%d')
+    datum = datetime.datetime.strptime(request.POST['datum_racuna'], '%d/%m/%y').strftime('%y-%m-%d')
     broj_racuna = request.POST['br_racuna']
     Racuni(firma=request.POST['dobavljac'], broj_racuna=broj_racuna, datum=datum).save()
     #id_racun = Racuni.objects.all().order_by("-id").only("id")[0]

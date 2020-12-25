@@ -10,4 +10,5 @@ urlpatterns = [
     path('racuni/<int:racun_id>/racun/', views.racun, name='racun'),
     path('info/', views.info, name='info'),
     path('ulaz/', views.ulaz, name='ulaz'),
+    path('convertPDF/', views.convertPDF),
 ]
