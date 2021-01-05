@@ -20,20 +20,20 @@ with pp.open(PDFpath) as pdf:
         for row in text.split("\n"):
             if row.startswith("Šifra"):
                 tablica = True
-                continue;
+                continue
                 
             if row.startswith("/6 POVRAT ROBE:"):
                 tablica = False
-                break;
+                break
                 
             if row.startswith("Copyright Aura Soft 2001."):
                 tablica = False
-                continue;
+                continue
             
             if tablica and (row.startswith("*/ 40") != 1):
                 m = zelengrad_re.search(row)
                 file.write(m.group(1) + "@" + m.group(2) + "@" + m.group(3) + "@" + m.group(4) + "@" + m.group(5) + "\n")
-                continue;
+                continue
             
             if row.startswith("ZELENGRAD d.o.o. PAZIN") and prvi_red == False:
                 file.write("ZELENGRAD d.o.o.@" + row.split()[-1] + "@") 
@@ -43,6 +43,3 @@ with pp.open(PDFpath) as pdf:
                 
                     
 file.close()
-         
-
-

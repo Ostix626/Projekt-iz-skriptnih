@@ -4,7 +4,6 @@ var newthree=[];
 var newmj=[];
 var newfour=[];
 
-
 function clear(){
     document.getElementById('one').value = '';
     document.getElementById('two').value = '';
@@ -137,13 +136,30 @@ function del(dok){
     }
 }
 
-$( document ).ready(function() {
+$(document).ready(function() {
+    $('#inputfile').change(function(){
+        if ($(this).val()) {
+            $('#viewfile').attr('disabled', false);
+        } 
+    });
+});
 
-    $('#viewfile').click(function () {
-        var rdr = new FileReader();
-        rdr.onload = function (e) {
+$(document).on('submit', '#pdfForm', function(e) {
+    e.preventDefault();
 
-            var therows = e.target.result.split("\n");
+    $.ajax({
+        type: 'POST',
+        url: '/convertPDF/',
+        data: new FormData(this),
+        processData: false,
+        contentType: false,
+        headers: { "X-CSRFToken": getCookie("csrftoken") },
+        success: function(therows) {
+            if(therows[0].charAt(therows[0].length-1) !== '\n') {
+                therows[0] = therows[0]+therows[1];
+                therows.splice(1, 1);
+            }
+            
             inf = therows[0].split("@");
             document.getElementById('inputDobavljac').value = inf[0];
             document.getElementById('inputRacun').value = inf[1];
@@ -158,9 +174,11 @@ $( document ).ready(function() {
                     newfour.push(parseFloat(columns[4].replace(',','.')).toFixed(2)); 
             }
             listshow();
+        },
+        error: function() {
+            alert('Error occured');
         }
-        rdr.readAsText($("#inputfile")[0].files[0]);
-    });
+    })
 });
 
 
@@ -217,3 +235,17 @@ document.getElementById('mj').addEventListener('keypress', function(event) {
         event.preventDefault();
     }
 });
+
+
+function getCookie(c_name) {
+    if (document.cookie.length > 0) {
+        c_start = document.cookie.indexOf(c_name + "=");
+        if (c_start != -1) {
+            c_start = c_start + c_name.length + 1;
+            c_end = document.cookie.indexOf(";", c_start);
+            if (c_end == -1) c_end = document.cookie.length;
+            return unescape(document.cookie.substring(c_start,c_end));
+        }
+    }
+    return "";
+}
