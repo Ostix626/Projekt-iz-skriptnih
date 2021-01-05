@@ -38,7 +38,8 @@ with pp.open(PDFpath) as pdf:
             if row.startswith("ZELENGRAD d.o.o. PAZIN") and prvi_red == False:
                 file.write("ZELENGRAD d.o.o.@" + row.split()[-1] + "@") 
             elif (row.find('Datum:') != -1) and prvi_red == False:
-                file.write(row.split()[-2] + "\n") 
+                datum = row.split()[-2]
+                file.write(datum[:6] + "20" + datum[6:] + "\n") 
                 prvi_red = True
                 
                     

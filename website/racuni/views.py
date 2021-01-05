@@ -54,7 +54,8 @@ def convertPDF(request):
                 if row.startswith("ZELENGRAD d.o.o. PAZIN") and prvi_red == False:
                     data.append("ZELENGRAD d.o.o.@" + row.split()[-1] + "@") 
                 elif (row.find('Datum:') != -1) and prvi_red == False:
-                    data.append(row.split()[-2] + "\n") 
+                    datum = row.split()[-2]
+                    data.append(datum[:6] + "20" + datum[6:] + "\n") 
                     prvi_red = True
         
 
